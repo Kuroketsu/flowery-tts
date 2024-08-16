@@ -14,13 +14,16 @@ class Flowery {
   /// If a [Client] instance is provided in `httpClient` parameter,
   /// do make sure to [close] the client after all requests are done.
   /// Check [Client.close] for more details.
-  const Flowery({final Client? httpClient}) : _httpClient = httpClient;
+  const Flowery({final Client? httpClient, this.userAgent})
+      : _httpClient = httpClient;
 
   final Client? _httpClient;
 
+  // The user-agent to use when sending request to the API.
+  final String? userAgent;
+
   Future<Uint8List> _request(
-    final String path,
-    final String? userAgent, [
+    final String path, [
     final Map<String, String>? queryParams,
   ]) async {
     final Response(
@@ -95,9 +98,6 @@ class Flowery {
     // The speed rate of the speech. Value must be in-between
     // 0.5 to 100. By default, it's 1.0.
     final double? speed,
-
-    // The user-agent to use when sending request to the API.
-    final String? userAgent,
   }) async {
     if (text.trimLeft().isEmpty) {
       throw const InvalidArgumentsException(
@@ -111,7 +111,7 @@ class Flowery {
       );
     }
 
-    return _request('tts', userAgent, {
+    return _request('tts', {
       'text': text,
       'voice': voice,
       if (translate != null) 'translate': translate.toString(),
