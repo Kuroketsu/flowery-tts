@@ -30,7 +30,7 @@ class Flowery {
       :statusCode,
     ) = await (_httpClient?.get ?? get)(
       apiUrl.replace(path: 'v$apiVersion/$path', queryParameters: queryParams),
-      headers: {'user-agent': 'flowery_tts/$version'},
+      headers: {'user-agent': userAgent ?? 'flowery_tts/$version'},
     );
 
     if (statusCode == 200) return bodyBytes;
